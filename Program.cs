@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Security.Cryptography;
 using System.IO;
 using System.Linq;
 
@@ -15,7 +12,7 @@ namespace Cipher {
 
         static void Main(string[] args) {
             // Uncomment 'SaveArraySampleToDisk' method to generate your own salt array.
-            // Cypher.SaveArraySampleToDisk();
+            // Cipher.SaveArraySampleToDisk();
 
             // Comment the Start method before generating your own salt array.
             Start();
