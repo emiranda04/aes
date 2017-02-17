@@ -5,6 +5,10 @@
 
 Allows to encrypt/decrypt individual files or directory contents.
 
+## Platform ##
+
+The first commit of this app was written for Windows but I decided to port it to Mac since its termnal is very friendly. Also, I get the benefit of coding both in Swift and C# using the same computer without having to switch machines. 
+
 ## How to use ##
 
 1. Create a C# console application and add the files to it.
