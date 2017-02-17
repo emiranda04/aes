@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Security.Cryptography;
 using System.IO;
 using System.Linq;
+
 
 namespace Cipher {
     class Cipher {
@@ -55,7 +54,7 @@ namespace Cipher {
             // Initialize array.
             byte[] encryptedData = null;
 
-            using (AesCryptoServiceProvider provider = new AesCryptoServiceProvider()) {
+            using (var provider = Aes.Create ()) {
                 provider.GenerateIV();
                 provider.Key = GenerateSymmetricKey(password, provider.KeySize);
                 provider.Mode = CipherMode.CBC;
@@ -88,7 +87,7 @@ namespace Cipher {
             // Initialize array.
             byte[] decryptedData = new byte[data.Length];
 
-            using (AesCryptoServiceProvider provider = new AesCryptoServiceProvider()) {
+            using (var provider = Aes.Create ()) {
                 provider.Key = GenerateSymmetricKey(password, provider.KeySize);
                 provider.Mode = CipherMode.CBC;
                 provider.Padding = PaddingMode.PKCS7;
@@ -112,8 +111,7 @@ namespace Cipher {
         /// </summary>
         /// <returns></returns>
         public static byte[] CreateArray() {
-
-            using (RandomNumberGenerator rng = new RNGCryptoServiceProvider()) {
+            using (RandomNumberGenerator rng = RandomNumberGenerator.Create() ) {
                 byte[] byteArray = new byte[64];
                 rng.GetBytes(byteArray);
 
