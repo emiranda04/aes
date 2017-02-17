@@ -121,6 +121,7 @@ namespace Cipher {
         }
 
         private static void EncryptDocument() {
+
             // Display message.
             Message.SubMenu(" File Encryption");
             Message.Action(" Enter the document name with its extension: ");
@@ -130,14 +131,18 @@ namespace Cipher {
             string plaintextFile = Path.Combine(Utility.directory, plaintextFileName);
             byte[] plaintextByteArray = File.ReadAllBytes(plaintextFile);
 
-            // Enter password.
+            // Check if source file should be deleted after encryption.
+            string deleteFile = DeleteFileChoice(fileName: plaintextFileName, action: "encryption");
+            Console.WriteLine("");
+
+            // Display password choice.
             Message.DisplayPasswordChoice();
             string diplayPassword = Console.ReadLine();
             Message.EnterPassword(action: "encrypting");
 
             // Get password.
             var password = Utility.GetPassword(diplayPassword);
-
+ 
             // Encrypt file and store it into a byte array.
             Message.ProcessingCipher(" Encrypting document");
             byte[] encryptedBytes = Cipher.Encrypt(plaintextByteArray, password);
@@ -147,10 +152,16 @@ namespace Cipher {
             var encryptedFile = Path.Combine(Utility.directory, encryptedFileName);
             Utility.SaveFileToDisk(fileName: encryptedFile, fileContents: encryptedBytes);
 
+            // Check if source file needs to be deleted.
+            if (deleteFile == "y") {
+                Utility.DeleteFile(plaintextFile);
+            }
+
             Message.PressKeyToContinue(" File encrypted.");
         }
 
         private static void DecryptDocumemt() {
+
             // Display message.
             Message.SubMenu(" File Decryption");
             Message.Action(" Enter the document name with its extension: ");
@@ -158,11 +169,11 @@ namespace Cipher {
             // Get encrypted file.
             string encryptedFileName = Console.ReadLine();
             string encryptedFile = Path.Combine(Utility.directory, encryptedFileName);
-
             var decryptedFileName = encryptedFileName.Replace(encryptionIndicator, "");
             var decryptedFile = Path.Combine(Utility.directory, decryptedFileName);
 
             // If file exists, cancel decryption.
+
             if (File.Exists(decryptedFile)) {
                 Message.FileAlreadyExists();
                 Message.MainMenu();
@@ -172,7 +183,11 @@ namespace Cipher {
             // Read encrypted file array.
             byte[] bytesToBeDecrypted = File.ReadAllBytes(encryptedFile);
 
-            // Enter password.
+            // Check if source file should be deleted after decryption.
+            string deleteFile = DeleteFileChoice(fileName: encryptedFileName, action: "decryption");
+            Console.WriteLine("");
+
+            // Display password choice.
             Message.DisplayPasswordChoice();
             string diplayPassword = Console.ReadLine();
             Message.EnterPassword(action: "decrypting");
@@ -186,6 +201,12 @@ namespace Cipher {
 
             // Save decrypted document to disk.
             Utility.SaveFileToDisk(fileName: decryptedFile, fileContents: decryptedBytes);
+
+            // Check if source file needs to be deleted.
+            if (deleteFile == "y") {
+                Utility.DeleteFile(encryptedFile);
+            }
+
             Message.PressKeyToContinue(" File decrypted.");
         }
 
@@ -209,6 +230,23 @@ namespace Cipher {
 
             // Save data to disk.
             Utility.SaveFileToDisk(fileName: decryptedFile, fileContents: decryptedBytes);
+        }
+
+        private static string DeleteFileChoice(string fileName, string action) {
+
+            Console.Write(" Delete '{0}' after {1} (y/n)? ", fileName, action);
+
+            string deleteFile = Console.ReadLine();
+
+            // Only a 'yes' response will delete the file.
+            if (deleteFile.ToLower() == "y") {
+                Console.Write(" File will be deleted!");
+            } else {
+                Console.Write(" File will not be deleted.");
+            }
+
+            return deleteFile;
+
         }
     }
 }

@@ -44,5 +44,9 @@ namespace Cipher {
         public static void SaveFileToDisk(string fileName, byte[] fileContents) {
             File.WriteAllBytes(fileName, fileContents);
         }
+
+        public static void DeleteFile(string file) {
+            File.Delete(file);
+        }
     }
 }
