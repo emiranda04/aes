@@ -1,15 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace Cipher {
 
     class Utility {
 
-        public static string directory = @"c:\code\cypher_files";
+        public static string directory = "/Users/emiranda/Documents/code/c#/cipher_files/";
 
         /// <summary>
         /// Allows user to choose to display the password on the screen as is being typed.
